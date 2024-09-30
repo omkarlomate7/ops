@@ -1,0 +1,24 @@
+# Python
+*.pyc
+__pycache__/
+
+# Environments
+.env
+venv/
+ENV/
+.venv/
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.so
+*.pyo
+*.sqlite3
+
+# Ignore the database:
+db.sqlite3
+*.sqlite3
+
+# Static files
+staticfiles/
