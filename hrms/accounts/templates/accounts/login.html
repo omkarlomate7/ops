@@ -1,24 +1,158 @@
 {% extends 'accounts/base.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Login - HRMS{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2>Login</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" class="form-control" id="username" name="username" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-        </div>
-        {% if error %}
-            <div class="alert alert-danger">{{ error }}</div>
-        {% endif %}
-        <button type="submit" class="btn btn-primary">Login</button>
-    </form>
+<div class="login-container">
+    <div class="login-card">
+        <h2>Login</h2>
+        <form method="POST" class="login-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required class="input-field" placeholder="Enter your username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required class="input-field" placeholder="Enter your password">
+            </div>
+            <button type="submit" class="btn-primary btn-animated">Login</button>
+            {% if error %}
+                <p class="error-message">{{ error }}</p>
+            {% endif %}
+        </form>
+    </div>
 </div>
+
+<style>
+    /* Container for login card */
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80vh; /* Takes up most of the viewport height */
+        background-color: #f0f4f8;
+        padding: 20px;
+    }
+
+    /* Card Styling */
+    .login-card {
+        background-color: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        animation: slideIn 0.6s ease-out;
+        width: 100%;
+        max-width: 400px;
+        transition: transform 0.3s ease;
+    }
+
+    .login-card:hover {
+        transform: translateY(-10px); /* Subtle lift-up on hover */
+    }
+
+    /* Form styling */
+    .login-form {
+        margin-top: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+    }
+
+    .input-field:focus {
+        border-color: #ff9a76;
+        outline: none;
+    }
+
+    /* Button styling with animations */
+    .btn-primary {
+        background-color: #ff9a76;
+        border: none;
+        padding: 12px 20px;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+        margin-top: 15px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #ff7a59;
+        transform: translateY(-5px);
+    }
+
+    .btn-animated {
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+    }
+
+    .btn-animated::after {
+        content: '';
+        background-color: rgba(255, 255, 255, 0.3);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 300%;
+        height: 300%;
+        z-index: -1;
+        transition: all 0.4s ease-in-out;
+        transform: translate(-100%, -100%) rotate(45deg);
+    }
+
+    .btn-animated:hover::after {
+        transform: translate(100%, 100%) rotate(45deg);
+    }
+
+    /* Error message styling */
+    .error-message {
+        color: red;
+        margin-top: 10px;
+        font-size: 14px;
+    }
+
+    /* Animations */
+    @keyframes slideIn {
+        from {
+            transform: translateY(50px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* Responsive styling */
+    @media screen and (max-width: 768px) {
+        .login-card {
+            width: 100%;
+            max-width: 350px;
+            padding: 30px;
+        }
+
+        .input-field {
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            padding: 10px 16px;
+            font-size: 14px;
+        }
+    }
+</style>
 {% endblock %}
