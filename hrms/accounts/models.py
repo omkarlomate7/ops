@@ -13,7 +13,6 @@ class Profile(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.get_role_display()}"
 
-
     class Meta:
         permissions = [
             ("can_view_hr_dashboard", "Can view HR dashboard"),

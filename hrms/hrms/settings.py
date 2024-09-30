@@ -76,9 +76,13 @@ WSGI_APPLICATION = "hrms.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ops_db',  # You can replace this with the name of your new database
+        'USER': 'postgres',  # Your PostgreSQL username
+        'PASSWORD': '4445',  # Your PostgreSQL password
+        'HOST': 'localhost',  # Set to 'localhost' if PostgreSQL is on the same machine
+        'PORT': '5432',  # Default PostgreSQL port
     }
 }
 
@@ -147,4 +151,5 @@ LOGGING = {
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
+    
 ]

@@ -77,3 +77,15 @@ def team_lead_dashboard(request):
 
 def unauthorized(request):
     return render(request, 'accounts/unauthorized.html')
+
+
+
+def employee_management(request):
+    return render(request, 'employee_management.html')
+
+def recruitment(request):
+    return render(request, 'recruitment.html')
+
+def payroll(request):
+    # Logic for Payroll page
+    return render(request, 'payroll.html')
