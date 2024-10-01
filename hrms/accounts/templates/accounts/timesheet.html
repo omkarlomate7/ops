@@ -1,0 +1,211 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}Timesheet Submission{% endblock %}
+
+{% block content %}
+<div class="timesheet-container">
+    <div class="header-bar">
+        <h1 class="page-title">Timesheet Submission</h1>
+        <a href="{% url 'my_timesheets' %}" class="my-timesheets-btn">My Timesheets</a>
+    </div>
+
+    <form method="POST" id="timesheet-form">
+        {% csrf_token %}
+        <input type="hidden" name="row_count" id="row-count" value="1">
+        <table class="timesheet-table" id="timesheet-table">
+            <thead>
+                <tr>
+                    <th>Sr. No.</th>
+                    <th>Application Name</th>
+                    <th>Task Title</th>
+                    <th>Task Description</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Hours Spent</th>
+                    <th>% Completed</th>
+                    <th>Total Efforts</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="timesheet-body">
+                <tr>
+                    <td>1</td>
+                    <td><input type="text" name="application_name_1" class="input-field" required></td>
+                    <td><input type="text" name="task_title_1" class="input-field" required></td>
+                    <td><input type="text" name="task_description_1" class="input-field" required></td>
+                    <td><input type="date" name="start_date_1" class="input-field" required></td>
+                    <td><input type="date" name="end_date_1" class="input-field" required></td>
+                    <td><input type="number" name="hours_spent_1" step="0.1" class="input-field" required></td>
+                    <td><input type="number" name="percent_completed_1" class="input-field" required></td>
+                    <td><input type="number" name="total_efforts_1" step="0.1" class="input-field" required></td>
+                    <td><button type="button" class="remove-btn" disabled>-</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" id="add-row-btn" class="add-row-btn">+ Add Row</button>
+        <button type="submit" class="submit-btn">Submit Timesheet</button>
+    </form>
+</div>
+
+<!-- Styling for the Timesheet Page -->
+<style>
+    /* General Styling */
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'RobotoGaramond', sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+    }
+
+    .timesheet-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 30px;
+        background: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .page-title {
+        font-size: 2.8rem;
+        color: #000000;
+        text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .my-timesheets-btn {
+        background-color: #3b4a3a;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 1.1rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .my-timesheets-btn:hover {
+        background-color: #3e8e41;
+    }
+
+    /* Table Styling */
+    .timesheet-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 30px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .timesheet-table thead {
+        background-color: #3b4a3a; /* Updated to black */
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .timesheet-table th, .timesheet-table td {
+        padding: 12px 15px;
+        font-size: 1.2rem;
+        text-align: left;
+    }
+
+    .timesheet-table tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .input-field:focus {
+        border-color: #ff7849;
+        box-shadow: 0 0 8px rgba(255, 154, 118, 0.2);
+        outline: none;
+    }
+
+    /* Add and Remove Buttons */
+    .add-row-btn, .remove-btn {
+        background-color: #3b4a3a; /* Updated to black */
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .add-row-btn:hover {
+        background-color: #333333;
+    }
+
+    .remove-btn {
+        background-color: #ff4c4c;
+    }
+
+    .remove-btn:hover {
+        background-color: #e60000;
+    }
+
+    /* Submit Button */
+    .submit-btn {
+        background-color: #3b4a3a;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin: 0 auto;
+        display: block;
+        transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        background-color: #ff5630;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+    }
+</style>
+
+<!-- JavaScript for Dynamic Row Addition -->
+<script>
+    document.getElementById('add-row-btn').addEventListener('click', function () {
+        let tableBody = document.getElementById('timesheet-body');
+        let rowCount = tableBody.rows.length + 1;
+
+        let row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${rowCount}</td>
+            <td><input type="text" name="application_name_${rowCount}" class="input-field" required></td>
+            <td><input type="text" name="task_title_${rowCount}" class="input-field" required></td>
+            <td><input type="text" name="task_description_${rowCount}" class="input-field" required></td>
+            <td><input type="date" name="start_date_${rowCount}" class="input-field" required></td>
+            <td><input type="date" name="end_date_${rowCount}" class="input-field" required></td>
+            <td><input type="number" name="hours_spent_${rowCount}" step="0.1" class="input-field" required></td>
+            <td><input type="number" name="percent_completed_${rowCount}" class="input-field" required></td>
+            <td><input type="number" name="total_efforts_${rowCount}" step="0.1" class="input-field" required></td>
+            <td><button type="button" class="remove-btn">-</button></td>
+        `;
+
+        tableBody.appendChild(row);
+
+        // Enable the remove button for this row
+        row.querySelector('.remove-btn').addEventListener('click', function () {
+            row.remove();
+        });
+    });
+</script>
+
+{% endblock %}

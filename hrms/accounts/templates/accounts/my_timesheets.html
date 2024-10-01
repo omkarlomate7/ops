@@ -1,0 +1,85 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}My Timesheets{% endblock %}
+
+{% block content %}
+<div class="timesheet-container">
+    <h1 class="page-title">My Submitted Timesheets</h1>
+
+    <table class="timesheet-table">
+        <thead>
+            <tr>
+                <th>Sr. No.</th>
+                <th>Application Name</th>
+                <th>Task Title</th>
+                <th>Task Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Hours Spent</th>
+                <th>% Completed</th>
+                <th>Total Efforts</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for timesheet in timesheets %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ timesheet.application_name }}</td>
+                <td>{{ timesheet.task_title }}</td>
+                <td>{{ timesheet.task_description }}</td>
+                <td>{{ timesheet.start_date }}</td>
+                <td>{{ timesheet.end_date }}</td>
+                <td>{{ timesheet.hours_spent }}</td>
+                <td>{{ timesheet.percent_completed }}%</td>
+                <td>{{ timesheet.total_efforts }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9">You haven't submitted any timesheets yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .timesheet-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 30px;
+        background: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .page-title {
+        font-size: 2.5rem;
+        color: #ff9a76;
+        text-align: center;
+        margin-bottom: 30px;
+        text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .timesheet-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 30px;
+    }
+
+    .timesheet-table thead {
+        background-color: #ff9a76;
+        color: #fff;
+    }
+
+    .timesheet-table th {
+        padding: 12px 15px;
+        font-size: 1.2rem;
+        text-align: left;
+    }
+
+    .timesheet-table td {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+</style>
+{% endblock %}

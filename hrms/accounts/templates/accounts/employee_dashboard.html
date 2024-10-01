@@ -1,20 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Dashboard</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Welcome to Employee Dashboard</h1>
+{% extends 'accounts/base.html' %}
 
-        <!-- Add your content here for employee functionalities -->
-        <p>This is the employee-specific dashboard where employees can access their tasks and resources.</p>
+{% block title %}Employee Dashboard{% endblock %}
 
-        <!-- Logout button -->
-        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
-    </div>
-</body>
-</html>
+{% block content %}
+<div class="dashboard-container">
+    <h1>Welcome to the Employee Dashboard</h1>
+    <p>This is the employee-specific dashboard where employees can access their tasks and resources.</p>
+</div>
+{% endblock %}

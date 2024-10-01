@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -78,13 +79,15 @@ WSGI_APPLICATION = "hrms.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ops_db',  # You can replace this with the name of your new database
-        'USER': 'postgres',  # Your PostgreSQL username
-        'PASSWORD': '4445',  # Your PostgreSQL password
-        'HOST': 'localhost',  # Set to 'localhost' if PostgreSQL is on the same machine
-        'PORT': '5432',  # Default PostgreSQL port
+        'NAME': 'ops_db',  # The name of your database
+        'USER': 'postgres',
+        'PASSWORD': '4445',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hrms.settings')
 
 
 # Password validation

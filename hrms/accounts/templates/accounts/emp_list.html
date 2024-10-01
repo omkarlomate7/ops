@@ -1,0 +1,175 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}Employee List{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="page-title">Employee List</h1>
+    
+    <div class="search-bar">
+        <form method="GET" action="{% url 'employee_list' %}">
+            <input type="text" name="search" placeholder="Search by name or email" id="search" class="search-input">
+            <button type="submit" class="search-btn">Search</button>
+        </form>
+    </div>
+    
+
+    <div class="employee-list">
+        {% for employee in employees %}
+        <div class="employee-card" onclick="window.location.href='{% url 'employee_details' employee.id %}'">
+            {% comment %} <div class="employee-avatar">
+                <img src="https://via.placeholder.com/60" alt="Employee Avatar">
+            </div> {% endcomment %}
+            <div class="employee-info">
+                <h2>{{ employee.user.first_name }} {{ employee.user.last_name }}</h2>
+                <p><strong>Email:</strong> {{ employee.user.email }}</p>
+                <p><strong>Role:</strong> {{ employee.get_role_display }}</p>
+                <span class="role-badge">{{ employee.get_role_display }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    /* Container styling */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Page title */
+    .page-title {
+        font-size: 2.5rem;
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 600;
+    }
+
+    /* Search bar styling */
+    .search-bar {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .search-input {
+        padding: 10px;
+        width: 300px;
+        border: 2px solid #f16522;
+        border-radius: 8px;
+        font-size: 16px;
+        margin-right: 10px;
+        outline: none;
+        transition: 0.3s;
+    }
+
+    .search-input:focus {
+        border-color: #d3541c;
+    }
+
+    .search-btn {
+        padding: 10px 20px;
+        background-color: #f16522;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .search-btn:hover {
+        background-color: #d3541c;
+    }
+
+    /* Employee list grid */
+    .employee-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    /* Card styling */
+    .employee-card {
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .employee-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .employee-avatar img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+    }
+
+    .employee-info {
+        flex-grow: 1;
+    }
+
+    .employee-info h2 {
+        font-size: 1.4rem;
+        color: #333;
+        margin: 0 0 10px;
+        font-weight: 600;
+    }
+
+    .employee-info p {
+        margin: 5px 0;
+        color: #555;
+        font-size: 1rem;
+    }
+
+    .role-badge {
+        background-color: #f16522;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+    /* Responsive styling */
+    @media (max-width: 768px) {
+        .page-title {
+            font-size: 2rem;
+        }
+
+        .employee-card {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .employee-avatar {
+            margin-bottom: 10px;
+        }
+
+        .search-bar {
+            flex-direction: column;
+        }
+
+        .search-input {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+</style>
+{% endblock %}

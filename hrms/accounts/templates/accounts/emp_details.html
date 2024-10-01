@@ -1,0 +1,203 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}Employee Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            <img src="https://via.placeholder.com/150" alt="Employee Avatar">
+        </div>
+        <h1 class="employee-name">{{ employee.user.first_name }} {{ employee.user.last_name }}</h1>
+        <p class="job-title">{{ employee.job_title }}</p>
+        <div class="profile-social-icons">
+            <a href="#" class="social-icon linkedin"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="social-icon github"><i class="fab fa-github"></i></a>
+            <a href="#" class="social-icon twitter"><i class="fab fa-twitter"></i></a>
+        </div>
+    </div>
+
+    <div class="details-card">
+        <div class="employee-details">
+            <h2>Employee Information</h2>
+            <div class="detail-row">
+                <p><strong>Email:</strong> {{ employee.user.email }}</p>
+                <p><strong>Role:</strong> {{ employee.get_role_display }}</p>
+            </div>
+            <div class="detail-row">
+                <p><strong>Date of Birth:</strong> {{ employee.date_of_birth }}</p>
+                <p><strong>Department:</strong> {{ employee.department }}</p>
+            </div>
+            <div class="detail-row">
+                <p><strong>Job Title:</strong> {{ employee.job_title }}</p>
+                <p><strong>Date of Hire:</strong> {{ employee.hire_date }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <button class="btn-primary">Send Email</button>
+        <button class="btn-secondary">Download CV</button>
+    </div>
+</div>
+
+<style>
+    /* Container styling */
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 30px;
+        background-color: #f5f5f5;
+        border-radius: 12px;
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* Profile header section */
+    .profile-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .profile-avatar {
+        margin: 0 auto;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid #ff9a76;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        animation: slideInFromLeft 1s ease;
+    }
+
+    .profile-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .employee-name {
+        font-size: 2.5rem;
+        margin-top: 20px;
+        color: #333;
+        animation: fadeIn 1.2s ease;
+    }
+
+    .job-title {
+        font-size: 1.2rem;
+        color: #ff9a76;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+
+    .profile-social-icons {
+        margin-top: 10px;
+        animation: fadeIn 1.5s ease;
+    }
+
+    .social-icon {
+        color: #fff;
+        background-color: #333;
+        padding: 10px;
+        border-radius: 50%;
+        margin: 0 5px;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+        background-color: #ff9a76;
+    }
+
+    /* Details section */
+    .details-card {
+        background-color: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        margin-top: 30px;
+        animation: slideInFromRight 0.8s ease;
+    }
+
+    .employee-details h2 {
+        font-size: 1.8rem;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .detail-row p {
+        font-size: 1.2rem;
+        color: #555;
+        margin: 0;
+    }
+
+    /* Action buttons */
+    .action-buttons {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .btn-primary, .btn-secondary {
+        padding: 12px 25px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        margin: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #ff9a76;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #ff7849;
+    }
+
+    .btn-secondary {
+        background-color: #333;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #555;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideInFromLeft {
+        from {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideInFromRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+</style>
+
+{% endblock %}
