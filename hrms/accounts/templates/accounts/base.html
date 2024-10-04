@@ -4,11 +4,15 @@
     <!-- Meta Tags and Title -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}HRMS{% endblock %}</title>
+    <title>{% block title %}OPS{% endblock %}</title>
 
     <!-- Google Fonts and Font Awesome -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <!-- CSS Reset -->
     <style>
@@ -19,7 +23,35 @@
             box-sizing: border-box;
         }
     </style>
+    body {
+        background-color: #f4f7fc;
+    }
 
+    .sidebar {
+        background-color: #343a40;
+        padding-top: 15px;
+        min-height: 100vh;
+    }
+
+    .sidebar a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        display: block;
+    }
+
+    .sidebar a:hover {
+        background-color: #007bff;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+
+    .navbar {
+        background-color: #007bff;
+        color: white;
+    }
     <!-- Main CSS Styling -->
     <style>
         /* Root CSS Variables */
@@ -134,6 +166,7 @@
         .sidebar a:hover {
             background-color: var(--header-background);
         }
+        
 
         /* Content Styling */
         .content {
@@ -237,39 +270,136 @@
 
     <!-- Header Section -->
     <div class="header">
-        <h1>HRMS</h1>
+        <h1>OPS</h1>
     </div>
 
-    <!-- Sidebar Menu -->
-    {% if user.is_authenticated %}
-    <div class="sidebar" id="sidebar">
-        <div class="logo">HRMS</div>
-        <!-- Conditional Sidebar Links Based on Role -->
-        {% if user.profile.role == 'employee' %}
-        <!-- Employee-specific links -->
-        <a href="{% url 'employee_dashboard' %}"><i class="fas fa-users"></i><span>Employee Dashboard</span></a>
-        {% comment %} <a href="{% url 'employee_profile' %}"><i class="fas fa-id-badge"></i><span>Profile</span></a>
-        <a href="{% url 'employee_tasks' %}"><i class="fas fa-tasks"></i><span>Tasks</span></a>
-        <a href="{% url 'employee_leave_requests' %}"><i class="fas fa-calendar-check"></i><span>Leave Requests</span></a> {% endcomment %}
-        {% endif %}
-        {% if user.profile.role == 'hr' %}
-        <!-- HR-specific links -->
-        <a href="{% url 'hr_dashboard' %}"><i class="fas fa-briefcase"></i><span>HR Dashboard</span></a>
-        <a href="{% url 'employee_list' %}"><i class="fas fa-users"></i><span>Employee List</span></a>
-        <a href="{% url 'timesheet' %}"><i class="fas fa-page"></i><span>Timesheet</span></a>
-        <a href="{% url 'employee_management' %}"><i class="fas fa-users-cog"></i><span>Employee Management</span></a>
-        <a href="{% url 'recruitment' %}"><i class="fas fa-user-plus"></i><span>Recruitment</span></a>
-        <a href="{% url 'payroll' %}"><i class="fas fa-money-bill-wave"></i><span>Payroll</span></a>
-        {% endif %}
-        {% if user.profile.role == 'team_lead' %}
-        <!-- Team Lead-specific links -->
-        <a href="{% url 'team_lead_dashboard' %}"><i class="fas fa-user-tie"></i><span>Team Lead Dashboard</span></a>
-        <a href="{% url 'team_tasks' %}"><i class="fas fa-tasks"></i><span>Team Tasks</span></a>
-        {% endif %}
-        <!-- Common Links -->
-        <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+  <!-- Sidebar Menu -->
+{% if user.is_authenticated %}
+<div class="sidebar" id="sidebar">
+    <div class="logo">HRMS</div>
+    
+    <!-- Conditional Sidebar Links Based on Role -->
+    {% if user.profile.role == 'employee' %}
+    <!-- Employee-specific links -->
+    <a href="{% url 'emp_land' %}"><i class="fas fa-users"></i><span>Employee Dashboard</span></a>
+    
+    <!-- Dropdown for Timesheet -->
+    <div class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn"><i class="fas fa-clock"></i><span>Timesheet</span></a>
+        <div class="dropdown-content">
+            <a href="{% url 'add_timesheet' %}"><i class="fas fa-plus-circle"></i><span>Fill Your Timesheet</span></a>
+            <a href="{% url 'my_timesheets' %}"><i class="fas fa-eye"></i><span>View My Timesheets</span></a>
+        </div>
     </div>
+
+    <a href="{% url 'my_details' %}"><i class="fas fa-profile"></i><span>Profile</span></a>
     {% endif %}
+
+    {% if user.profile.role == 'hr' %}
+    <!-- HR-specific links -->
+    <a href="{% url 'hr_dashboard' %}"><i class="fas fa-briefcase"></i><span>HR Dashboard</span></a>
+    <a href="{% url 'employee_list' %}"><i class="fas fa-users"></i><span>Employee List</span></a>
+    
+    <!-- Dropdown for Timesheet (HR View) -->
+    <div class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn"><i class="fas fa-clock"></i><span>Timesheet</span></a>
+        <div class="dropdown-content">
+            <a href="{% url 'add_timesheet' %}"><i class="fas fa-plus-circle"></i><span>Fill Your Timesheet</span></a>
+            <a href="{% url 'timesheet_dashboard' %}"><i class="fas fa-eye"></i><span>View All Timesheets</span></a>
+        </div>
+    </div>
+
+    <a href="{% url 'employee_management' %}"><i class="fas fa-users-cog"></i><span>Employee Management</span></a>
+    <a href="{% url 'recruitment' %}"><i class="fas fa-user-plus"></i><span>Recruitment</span></a>
+    <a href="{% url 'payroll' %}"><i class="fas fa-money-bill-wave"></i><span>Payroll</span></a>
+    {% endif %}
+
+    {% if user.profile.role == 'team_lead' %}
+    <!-- Team Lead-specific links -->
+    <a href="{% url 'team_lead_dashboard' %}"><i class="fas fa-user-tie"></i><span>Team Lead Dashboard</span></a>
+    <a href="{% url 'team_tasks' %}"><i class="fas fa-tasks"></i><span>Team Tasks</span></a>
+    {% endif %}
+
+    <!-- Common Links -->
+    <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+</div>
+{% endif %}
+
+<!-- Sidebar CSS -->
+<style>
+    .sidebar {
+        background-color: #2f3e46;
+        padding-top: 20px;
+        min-width: 250px;
+        position: fixed;
+        height: 100%;
+    }
+
+    .sidebar .logo {
+        font-size: 24px;
+        color: #ffffff;
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+
+    .sidebar a {
+        display: block;
+        padding: 10px 20px;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+    .sidebar a:hover {
+        background-color: #3b4a3a;
+        color: #ffffff;
+    }
+
+    .dropdown {
+        position: relative;
+    }
+
+    .dropbtn {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 10px 20px;
+        width: 100%;
+        color: white;
+        text-align: left;
+        background-color: transparent;
+        border: none;
+    }
+
+    .dropdown-content {
+        display: none;
+        background-color: #2f3e46;
+        padding-left: 20px;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown-content a {
+        padding: 10px 30px;
+        color: #ffffff;
+        display: block;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #3b4a3a;
+    }
+
+    .fas {
+        margin-right: 10px;
+    }
+</style>
+
+
 
     <!-- Main Content Area -->
     <div class="content" id="content">
@@ -293,5 +423,8 @@
             footer.classList.toggle('expanded');
         }
     </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

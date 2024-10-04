@@ -1,0 +1,22 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>{{ employee.name }}'s Profile</h1>
+
+    <p><strong>Name:</strong> {{ employee.name }}</p>
+    <p><strong>Address:</strong> {{ employee.address }}</p>
+    <p><strong>Email:</strong> {{ employee.email }}</p>
+    <p><strong>Phone Number:</strong> {{ employee.phone_number }}</p>
+    <p><strong>Joining Date:</strong> {{ employee.joining_date }}</p>
+    <p><strong>Designation:</strong> {{ employee.designation }}</p>
+    <p><strong>Team Lead:</strong> {{ employee.team_lead }}</p>
+    <p><strong>Salary Amount:</strong> {{ employee.salary_amount }}</p>
+    <p><strong>Remaining Leaves (Month):</strong> {{ employee.remaining_leaves_month }}</p>
+    <p><strong>Remaining Leaves (Year):</strong> {{ employee.remaining_leaves_year }}</p>
+    <p><strong>Education:</strong> {{ employee.education }}</p>
+    <p><strong>Institution:</strong> {{ employee.institution }}</p>
+    <p><strong>Graduation Year:</strong> {{ employee.graduation_year }}</p>
+    <p><strong>Salary Slip:</strong> <a href="{{ employee.salary_slip_url }}">Download Salary Slip</a></p>
+</div>
+{% endblock %}

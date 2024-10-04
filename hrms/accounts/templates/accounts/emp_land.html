@@ -1,0 +1,118 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}Employee Dashboard{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="display-4 mb-4">Welcome to the Employee Dashboard</h1>
+            <p class="lead">Manage your tasks, leave requests, and timesheets efficiently.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Task Card -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <i class="fas fa-tasks"></i> Tasks
+                </div>
+                <div class="card-body">
+                    <p>Your pending tasks are listed here. Stay productive!</p>
+                    <ul>
+                        <li>Task 1: Finish report by EOD</li>
+                        <li>Task 2: Attend the team meeting at 3 PM</li>
+                        <li>Task 3: Update project status</li>
+                    </ul>
+                    <a href="#" class="btn btn-outline-primary btn-sm mt-2">View All Tasks</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leave Requests Card -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-success text-white">
+                    <i class="fas fa-calendar-alt"></i> Leave Requests
+                </div>
+                <div class="card-body">
+                    <p>Track and submit your leave requests here.</p>
+                    <ul>
+                        <li>Leave Request 1: Pending approval</li>
+                        <li>Leave Request 2: Approved for 10th October</li>
+                        <li>Leave Request 3: Declined</li>
+                    </ul>
+                    <a href="#" class="btn btn-outline-success btn-sm mt-2">View All Leave Requests</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timesheets Card -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-warning text-white">
+                    <i class="fas fa-clock"></i> Timesheets
+                </div>
+                <div class="card-body">
+                    <p>Submit and review your timesheets.</p>
+                    <ul>
+                        <li>Timesheet 1: Submitted on 1st Oct</li>
+                        <li>Timesheet 2: Submitted on 25th Sept</li>
+                        <li>Timesheet 3: Pending submission</li>
+                    </ul>
+                    <a href="#" class="btn btn-outline-warning btn-sm mt-2">View All Timesheets</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Task Progress Bar -->
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-info text-white">
+                    <i class="fas fa-chart-line"></i> Your Task Progress
+                </div>
+                <div class="card-body">
+                    <p>Track the progress of your tasks below:</p>
+                    <div class="progress mb-2">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 50%;" aria-valuenow="50"
+                            aria-valuemin="0" aria-valuemax="100">50%</div>
+                    </div>
+                    <a href="#" class="btn btn-outline-info btn-sm">View Task Progress</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Additional Resource Links -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <h5>Quick Links</h5>
+                    <a href="#" class="d-block">Company Policy</a>
+                    <a href="#" class="d-block">Employee Benefits</a>
+                    <a href="#" class="d-block">Upcoming Events</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- News and Updates -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <h5>Latest News</h5>
+                    <p>Stay updated with the latest company news.</p>
+                    <ul>
+                        <li>Company Annual Meet on 25th October</li>
+                        <li>Team Building Workshop next Friday</li>
+                        <li>New Health Insurance Plans for Employees</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

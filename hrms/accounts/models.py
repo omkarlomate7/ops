@@ -13,6 +13,12 @@ class Employee(models.Model):
     job_title = models.CharField(max_length=100)
     hire_date = models.DateField()
     salary = models.DecimalField(max_digits=10, decimal_places=2)
+    remaining_leaves_month = models.IntegerField(default=0)  # Remaining leaves for current month
+    remaining_leaves_year = models.IntegerField(default=0)   # Remaining leaves for current year
+    team_lead = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="team_lead")
+    salary_slip_url = models.URLField(max_length=255, blank=True)  # URL to download salary slip
+    education = models.CharField(max_length=255, blank=True)  # Employee education information
+    address = models.TextField(blank=True)  # Employee's address
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
