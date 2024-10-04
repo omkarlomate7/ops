@@ -44,6 +44,12 @@ class Profile(models.Model):
         ]
 
 class Timesheet(models.Model):
+    STATUS_CHOICES = [
+        ('Submitted', 'Submitted'),
+        ('Approved', 'Approved'),
+        ('Rejected', 'Rejected'),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     application_name = models.CharField(max_length=255)
     task_title = models.CharField(max_length=255)
@@ -53,10 +59,12 @@ class Timesheet(models.Model):
     hours_spent = models.DecimalField(max_digits=5, decimal_places=2)
     percent_completed = models.DecimalField(max_digits=5, decimal_places=2)
     total_efforts = models.DecimalField(max_digits=5, decimal_places=2)
+    submit_date = models.DateField(auto_now_add=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Submitted')
 
     def __str__(self):
         return f"{self.user.username} - {self.task_title}"
-    
+
 class LeaveRequest(models.Model):
     STATUS_CHOICES = [
         ('Pending', 'Pending'),

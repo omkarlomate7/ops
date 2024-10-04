@@ -4,13 +4,11 @@ from django.contrib.auth.decorators import login_required, permission_required, 
 from .models import Profile, Employee, Timesheet, LeaveRequest
 import logging
 from django.contrib.auth.models import User, Group
-from django.db.models import Q
+from django.db.models import Q, Sum, Count
 from .forms import TimesheetForm, LeaveRequestForm
 from django.utils import timezone
 
-
 logger = logging.getLogger(__name__)
-
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -58,15 +56,6 @@ def home(request):
 def homepage(request):
     return render(request, 'accounts/homepage.html')
 
-
-# @login_required
-# def employee_dashboard(request):
-#     if request.user.profile.role != 'employee':
-#         return render(request, 'accounts/employee_dashboard.html')
-#     else:
-#         return redirect('unauthorized')
-
-    
 @login_required
 def hr_dashboard(request):
     if request.user.profile.role != 'hr':
@@ -122,43 +111,6 @@ def employee_list(request):
 def employee_details(request, employee_id):
     employee = get_object_or_404(Employee, id=employee_id)
     return render(request, 'accounts/emp_details.html', {'employee': employee})
-
-
-# @login_required
-# def submit_timesheet(request):
-#     if request.method == 'POST':
-#         row_count = int(request.POST.get('row_count'))  # Get the total number of rows
-        
-#         for i in range(1, row_count + 1):
-#             application_name = request.POST.get(f'application_name_{i}')
-#             task_title = request.POST.get(f'task_title_{i}')
-#             task_description = request.POST.get(f'task_description_{i}')
-#             start_date = request.POST.get(f'start_date_{i}')
-#             end_date = request.POST.get(f'end_date_{i}')
-#             hours_spent = request.POST.get(f'hours_spent_{i}')
-#             percent_completed = request.POST.get(f'percent_completed_{i}')
-#             total_efforts = request.POST.get(f'total_efforts_{i}')
-
-#             # Check if the row contains valid data, if all fields are not empty
-#             if all([application_name, task_title, task_description, start_date, end_date, hours_spent, percent_completed, total_efforts]):
-#                 # Save the timesheet only if all fields are valid
-#                 Timesheet.objects.create(
-#                     user=request.user,
-#                     application_name=application_name,
-#                     task_title=task_title,
-#                     task_description=task_description,
-#                     start_date=start_date,
-#                     end_date=end_date,
-#                     hours_spent=hours_spent,
-#                     percent_completed=percent_completed,
-#                     total_efforts=total_efforts
-#                 )
-        
-#         return redirect('timesheet')  # Redirect after submission
-#     else:
-#         return render(request, 'accounts/timesheet.html')
-
-# View to display the user's submitted timesheets
 
 @login_required
 def submit_leave_request(request):
@@ -217,7 +169,6 @@ def emp_profile(request):
     # Render the employee profile page
     return render(request, 'accounts/emp_profile.html', context)
 
-
 @login_required
 def my_details(request):
     try:
@@ -248,7 +199,6 @@ def my_details(request):
         }
     }
     return render(request, 'accounts/my_details.html', context)
-
 
 @login_required
 def hr_view_timesheets(request):
@@ -306,9 +256,27 @@ def my_timesheets(request):
 
 @login_required
 def timesheet_dashboard(request):
-    # Check user role to decide which dashboard to show
-    if request.user.profile.role == 'hr':
-        return render(request, 'accounts/timesheet_dashboard.html')
-    else:
-        # Redirect employees directly to their timesheets page
+    if request.user.profile.role != 'hr':
         return redirect('my_timesheets')
+    
+    total_timesheets = Timesheet.objects.count()
+    total_submitted_timesheets = Timesheet.objects.filter(status='Submitted').count()
+    total_approved_timesheets = Timesheet.objects.filter(status='Approved').count()
+    total_rejected_timesheets = Timesheet.objects.filter(status='Rejected').count()
+    weekly_submitted_timesheets = Timesheet.objects.filter(submit_date__week=timezone.now().isocalendar()[1]).count()
+    weekly_approved_timesheets = Timesheet.objects.filter(submit_date__week=timezone.now().isocalendar()[1], status='Approved').count()
+    weekly_rejected_timesheets = Timesheet.objects.filter(submit_date__week=timezone.now().isocalendar()[1], status='Rejected').count()
+    total_hours_logged = Timesheet.objects.aggregate(total_hours=Sum('hours_spent'))['total_hours'] or 0
+    average_hours_per_staff = Timesheet.objects.values('user').annotate(total_hours=Sum('hours_spent')).aggregate(avg_hours=Sum('total_hours') / Count('user'))['avg_hours'] or 0
+
+    context = {
+        'total_submitted_timesheets': total_submitted_timesheets,
+        'total_approved_timesheets': total_approved_timesheets,
+        'total_rejected_timesheets': total_rejected_timesheets,
+        'weekly_submitted_timesheets': weekly_submitted_timesheets,
+        'weekly_approved_timesheets': weekly_approved_timesheets,
+        'weekly_rejected_timesheets': weekly_rejected_timesheets,
+        'total_hours_logged': total_hours_logged,
+        'average_hours_per_staff': average_hours_per_staff,
+    }
+    return render(request, 'accounts/timesheet_dashboard.html', context)

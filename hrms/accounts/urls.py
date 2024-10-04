@@ -26,12 +26,16 @@ urlpatterns = [
     path('payroll/', views.payroll, name='payroll'),
 
     # Timesheet Functionality URLs
-    # path('timesheet/add/', views.add_timesheet, name='add_timesheet'),  # URL for adding a new timesheet.
     path('timesheet/add/', views.add_timesheet, name='add_timesheet'),  # URL for adding a new timesheet
     path('timesheet_dashboard/', views.timesheet_dashboard, name='timesheet_dashboard'),  # Main timesheet dashboard
     path('timesheets/view/', views.hr_view_timesheets, name='hr_view_timesheets'),  # HR-specific view for all employees' timesheets
     path('my_timesheets/', views.my_timesheets, name='my_timesheets'),  # Employee's personal timesheet view
 
+    # Leave Request URLs
+    path('submit_leave_request/', views.submit_leave_request, name='submit_leave_request'),  # URL to submit leave request
+    path('my_leave_requests/', views.my_details, name='my_leave_requests'),  # URL to view submitted leave requests
+
     # Employee Profile URLs
     path('profile/', views.my_details, name='my_details'),
+    path('profile/view/', views.emp_profile, name='emp_profile'),
 ]
