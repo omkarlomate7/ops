@@ -49,8 +49,8 @@ class Timesheet(models.Model):
         ('Approved', 'Approved'),
         ('Rejected', 'Rejected'),
     ]
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='timesheets', null=True, blank=True)  # Link directly to the User model
+    employee = models.ForeignKey('Employee', on_delete=models.CASCADE, related_name='timesheets', null=True, blank=True)  # Keep employee reference as well if needed
     application_name = models.CharField(max_length=255)
     task_title = models.CharField(max_length=255)
     task_description = models.TextField()
@@ -63,8 +63,12 @@ class Timesheet(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Submitted')
 
     def __str__(self):
-        return f"{self.user.username} - {self.task_title}"
-
+        if self.employee:
+            return f"{self.employee.user.username} - {self.task_title}"
+        elif self.user:
+            return f"{self.user.username} - {self.task_title}"
+        return self.task_title
+    
 class LeaveRequest(models.Model):
     STATUS_CHOICES = [
         ('Pending', 'Pending'),
@@ -72,7 +76,7 @@ class LeaveRequest(models.Model):
         ('Rejected', 'Rejected'),
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='leave_requests', null=True)  # Temporary nullable
     start_date = models.DateField()
     end_date = models.DateField()
     reason = models.TextField()
@@ -82,7 +86,4 @@ class LeaveRequest(models.Model):
     submitted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.status}"
-
-    def is_approved(self):
-        return self.hr_approval and self.team_lead_approval
+        return f"{self.employee.user.username} - {self.status}" if self.employee else f"{self.status}"

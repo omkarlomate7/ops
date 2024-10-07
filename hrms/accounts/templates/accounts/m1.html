@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer's Orders Table</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-purple-900 to-blue-900 min-h-screen flex items-center justify-center">
+
+    <!-- Table Container -->
+    <div class="bg-white shadow-lg rounded-lg w-full max-w-4xl p-6">
+        <h2 class="text-xl font-bold mb-4">Customer's Orders</h2>
+        <table class="min-w-full text-left text-sm text-gray-600">
+            <thead class="bg-gray-100 text-gray-600">
+                <tr>
+                    <th class="py-2 px-4">id</th>
+                    <th class="py-2 px-4">Customer</th>
+                    <th class="py-2 px-4">Location</th>
+                    <th class="py-2 px-4">Order Date</th>
+                    <th class="py-2 px-4">Status</th>
+                    <th class="py-2 px-4">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Row 1 -->
+                <tr class="border-b">
+                    <td class="py-2 px-4">1</td>
+                    <td class="py-2 px-4 flex items-center">
+                        <img src="https://placehold.co/30x30" alt="Zinzu Chan Lee" class="w-8 h-8 rounded-full mr-2">
+                        Zinzu Chan Lee
+                    </td>
+                    <td class="py-2 px-4">Seoul</td>
+                    <td class="py-2 px-4">17 Dec, 2022</td>
+                    <td class="py-2 px-4">
+                        <span class="bg-green-100 text-green-600 py-1 px-3 rounded-full text-xs">Delivered</span>
+                    </td>
+                    <td class="py-2 px-4">$128.90</td>
+                </tr>
+                <!-- Row 2 -->
+                <tr class="border-b bg-gray-50">
+                    <td class="py-2 px-4">2</td>
+                    <td class="py-2 px-4 flex items-center">
+                        <img src="https://placehold.co/30x30" alt="Jeet Saru" class="w-8 h-8 rounded-full mr-2">
+                        Jeet Saru
+                    </td>
+                    <td class="py-2 px-4">Paris</td>
+                    <td class="py-2 px-4">27 Aug, 2023</td>
+                    <td class="py-2 px-4">
+                        <span class="bg-red-100 text-red-600 py-1 px-3 rounded-full text-xs">Cancelled</span>
+                    </td>
+                    <td class="py-2 px-4">$5350.50</td>
+                </tr>
+                <!-- Row 3 -->
+                <tr class="border-b">
+                    <td class="py-2 px-4">3</td>
+                    <td class="py-2 px-4 flex items-center">
+                        <img src="https://placehold.co/30x30" alt="Sonal Gharti" class="w-8 h-8 rounded-full mr-2">
+                        Sonal Gharti
+                    </td>
+                    <td class="py-2 px-4">Tokyo</td>
+                    <td class="py-2 px-4">14 Mar, 2023</td>
+                    <td class="py-2 px-4">
+                        <span class="bg-blue-100 text-blue-600 py-1 px-3 rounded-full text-xs">Shipped</span>
+                    </td>
+                    <td class="py-2 px-4">$210.40</td>
+                </tr>
+                <!-- Row 4 -->
+                <tr class="border-b bg-gray-50">
+                    <td class="py-2 px-4">4</td>
+                    <td class="py-2 px-4 flex items-center">
+                        <img src="https://placehold.co/30x30" alt="Alson GC" class="w-8 h-8 rounded-full mr-2">
+                        Alson GC
+                    </td>
+                    <td class="py-2 px-4">New Delhi</td>
+                    <td class="py-2 px-4">25 May, 2023</td>
+                    <td class="py-2 px-4">
+                        <span class="bg-green-100 text-green-600 py-1 px-3 rounded-full text-xs">Delivered</span>
+                    </td>
+                    <td class="py-2 px-4">$149.70</td>
+                </tr>
+                <!-- Row 5 -->
+                <tr class="border-b">
+                    <td class="py-2 px-4">5</td>
+                    <td class="py-2 px-4 flex items-center">
+                        <img src="https://placehold.co/30x30" alt="Sarita Limbu" class="w-8 h-8 rounded-full mr-2">
+                        Sarita Limbu
+                    </td>
+                    <td class="py-2 px-4">Kathmandu</td>
+                    <td class="py-2 px-4">23 Apr, 2023</td>
+                    <td class="py-2 px-4">
+                        <span class="bg-yellow-100 text-yellow-600 py-1 px-3 rounded-full text-xs">Pending</span>
+                    </td>
+                    <td class="py-2 px-4">$399.99</td>
+                </tr>
+                <!-- Row 6 -->
+                <tr class="border-b bg-gray-50">
+                    <td class="py-2 px-4">6</td>
+                    <td class="py-2 px-4 flex items-center">
+                        <img src="https://placehold.co/30x30" alt="Alex Gonley" class="w-8 h-8 rounded-full mr-2">
+                        Alex Gonley
+                    </td>
+                    <td class="py-2 px-4">London</td>
+                    <td class="py-2 px-4">23 Apr, 2023</td>
+                    <td class="py-2 px-4">
+                        <span class="bg-red-100 text-red-600 py-1 px-3 rounded-full text-xs">Cancelled</span>
+                    </td>
+                    <td class="py-2 px-4">$399.99</td>
+                </tr>
+                <!-- Row 7 -->
+                <tr class="border-b">
+                    <td class="py-2 px-4">7</td>
+                    <td class="py-2 px-4 flex items-center">
+                        <img src="https://placehold.co/30x30" alt="Sonal Gharti" class="w-8 h-8 rounded-full mr-2">
+                        Sonal Gharti
+                    </td>
+                    <td class="py-2 px-4">Tokyo</td>
+                    <td class="py-2 px-4">14 Mar, 2023</td>
+                    <td class="py-2 px-4">
+                        <span class="bg-blue-100 text-blue-600 py-1 px-3 rounded-full text-xs">Shipped</span>
+                    </td>
+                    <td class="py-2 px-4">$210.40</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

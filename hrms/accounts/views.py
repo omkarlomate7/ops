@@ -3,10 +3,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from .models import Profile, Employee, Timesheet, LeaveRequest
 import logging
+from django.contrib import messages
 from django.contrib.auth.models import User, Group
 from django.db.models import Q, Sum, Count
 from .forms import TimesheetForm, LeaveRequestForm
 from django.utils import timezone
+from django.db import IntegrityError
 
 logger = logging.getLogger(__name__)
 
@@ -202,18 +204,22 @@ def my_details(request):
 
 @login_required
 def hr_view_timesheets(request):
-    # Get all timesheets submitted by employees
-    timesheets = Timesheet.objects.all()
+    timesheets = Timesheet.objects.select_related('employee', 'employee__user').all()
+    return render(request, 'accounts/hr_view_timesheets.html', {'timesheets': timesheets})
 
-    context = {
-        'timesheets': timesheets,
-    }
-    return render(request, 'accounts/hr_view_timesheets.html', context)
+from django.shortcuts import get_object_or_404
 
 @login_required
 def add_timesheet(request):
+    print("add_timesheet view called")
     if request.method == 'POST':
-        row_count = int(request.POST.get('row_count'))  # Get the total number of rows
+        print("POST request received")
+        
+        # Printing the entire POST data to see if all fields are being received
+        print(f"POST data received: {request.POST}")
+
+        row_count = int(request.POST.get('row_count', 0))  # Get the total number of rows
+        print(f"Row count: {row_count}")
 
         # Iterate through each row and save timesheet entries
         for i in range(1, row_count + 1):
@@ -226,48 +232,90 @@ def add_timesheet(request):
             percent_completed = request.POST.get(f'percent_completed_{i}')
             total_efforts = request.POST.get(f'total_efforts_{i}')
 
+            # Logging all data retrieved
+            print(f"Processing row {i}: application_name={application_name}, task_title={task_title}, "
+                  f"task_description={task_description}, start_date={start_date}, end_date={end_date}, "
+                  f"hours_spent={hours_spent}, percent_completed={percent_completed}, total_efforts={total_efforts}")
+
             # Check if the row contains valid data (i.e., all fields are not empty)
             if all([application_name, task_title, task_description, start_date, end_date, hours_spent, percent_completed, total_efforts]):
-                # Save the timesheet only if all fields are valid
-                Timesheet.objects.create(
-                    user=request.user,
-                    application_name=application_name,
-                    task_title=task_title,
-                    task_description=task_description,
-                    start_date=start_date,
-                    end_date=end_date,
-                    hours_spent=hours_spent,
-                    percent_completed=percent_completed,
-                    total_efforts=total_efforts
-                )
+                try:
+                    # Convert numerical data types
+                    hours_spent = float(hours_spent)
+                    percent_completed = float(percent_completed)
+                    total_efforts = float(total_efforts)
+
+                    # Save the timesheet only if all fields are valid
+                    print(f"Saving timesheet for row {i}")
+                    Timesheet.objects.create(
+                        user=request.user,  # Save the timesheet with the logged-in user
+                        application_name=application_name,
+                        task_title=task_title,
+                        task_description=task_description,
+                        start_date=start_date,
+                        end_date=end_date,
+                        hours_spent=hours_spent,
+                        percent_completed=percent_completed,
+                        total_efforts=total_efforts
+                    )
+
+                    print(f"Timesheet saved successfully for row {i}: {timesheet}")
+                except ValueError as ve:
+                    print(f"Value error for row {i}: {ve}")
+                except IntegrityError as ie:
+                    print(f"Integrity error for row {i}: {ie}")
+                except Exception as e:
+                    print(f"Error saving timesheet for row {i}: {e}")
+            else:
+                print(f"Invalid data for row {i}, skipping save")
         
+        messages.success(request, "Timesheet added successfully.")
         return redirect('my_timesheets')  # Redirect after submission, showing user's own timesheets
 
     # GET method to render the add timesheet form
+    print("GET request received, rendering add_timesheet form")
     return render(request, 'accounts/add_timesheet.html')
+
 
 @login_required
 def my_timesheets(request):
-    timesheets = Timesheet.objects.filter(user=request.user)
+    print("my_timesheets view called")
+    user_timesheets = Timesheet.objects.filter(user=request.user)
+    print(f"Queried timesheets for user {request.user.username}: {user_timesheets.count()} records found.")
+    for timesheet in user_timesheets:
+        print(f"Timesheet: {timesheet.task_title}, Submitted Date: {timesheet.submit_date}")
+
     context = {
-        'timesheets': timesheets
+        'timesheets': user_timesheets
     }
     return render(request, 'accounts/my_timesheets.html', context)
 
 @login_required
 def timesheet_dashboard(request):
+    # Ensure only HR role can access the dashboard
     if request.user.profile.role != 'hr':
         return redirect('my_timesheets')
     
+    # Updated queries to use employee__user instead of user
     total_timesheets = Timesheet.objects.count()
     total_submitted_timesheets = Timesheet.objects.filter(status='Submitted').count()
     total_approved_timesheets = Timesheet.objects.filter(status='Approved').count()
     total_rejected_timesheets = Timesheet.objects.filter(status='Rejected').count()
-    weekly_submitted_timesheets = Timesheet.objects.filter(submit_date__week=timezone.now().isocalendar()[1]).count()
-    weekly_approved_timesheets = Timesheet.objects.filter(submit_date__week=timezone.now().isocalendar()[1], status='Approved').count()
-    weekly_rejected_timesheets = Timesheet.objects.filter(submit_date__week=timezone.now().isocalendar()[1], status='Rejected').count()
+    
+    current_week = timezone.now().isocalendar()[1]
+    weekly_submitted_timesheets = Timesheet.objects.filter(submit_date__week=current_week).count()
+    weekly_approved_timesheets = Timesheet.objects.filter(submit_date__week=current_week, status='Approved').count()
+    weekly_rejected_timesheets = Timesheet.objects.filter(submit_date__week=current_week, status='Rejected').count()
+
     total_hours_logged = Timesheet.objects.aggregate(total_hours=Sum('hours_spent'))['total_hours'] or 0
-    average_hours_per_staff = Timesheet.objects.values('user').annotate(total_hours=Sum('hours_spent')).aggregate(avg_hours=Sum('total_hours') / Count('user'))['avg_hours'] or 0
+    
+    # Calculate average hours per staff by grouping by employee__user
+    average_hours_per_staff = (
+        Timesheet.objects.values('employee__user')
+        .annotate(total_hours=Sum('hours_spent'))
+        .aggregate(avg_hours=Sum('total_hours') / Count('employee__user'))['avg_hours']
+        or 0
+    )
 
     context = {
         'total_submitted_timesheets': total_submitted_timesheets,
@@ -280,3 +328,8 @@ def timesheet_dashboard(request):
         'average_hours_per_staff': average_hours_per_staff,
     }
     return render(request, 'accounts/timesheet_dashboard.html', context)
+
+# Updated view function for LeaveRequest
+def view_leave_requests(request):
+    leave_requests = LeaveRequest.objects.filter(employee__user=request.user)
+    return render(request, 'leave_requests.html', {'leave_requests': leave_requests})

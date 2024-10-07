@@ -6,80 +6,130 @@
 <div class="timesheet-container">
     <h1 class="page-title">My Submitted Timesheets</h1>
 
-    <table class="timesheet-table">
-        <thead>
-            <tr>
-                <th>Sr. No.</th>
-                <th>Application Name</th>
-                <th>Task Title</th>
-                <th>Task Description</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Hours Spent</th>
-                <th>% Completed</th>
-                <th>Total Efforts</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for timesheet in timesheets %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ timesheet.application_name }}</td>
-                <td>{{ timesheet.task_title }}</td>
-                <td>{{ timesheet.task_description }}</td>
-                <td>{{ timesheet.start_date }}</td>
-                <td>{{ timesheet.end_date }}</td>
-                <td>{{ timesheet.hours_spent }}</td>
-                <td>{{ timesheet.percent_completed }}%</td>
-                <td>{{ timesheet.total_efforts }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="9">You haven't submitted any timesheets yet.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="timesheet-table">
+            <thead>
+                <tr>
+                    <th>Sr. No.</th>
+                    <th>Application Name</th>
+                    <th>Task Title</th>
+                    <th>Task Description</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Hours Spent</th>
+                    <th>percent completed</th>
+                    <th>Total Efforts</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for timesheet in timesheets %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ timesheet.application_name }}</td>
+                    <td>{{ timesheet.task_title }}</td>
+                    <td>{{ timesheet.task_description }}</td>
+                    <td>{{ timesheet.start_date }}</td>
+                    <td>{{ timesheet.end_date }}</td>
+                    <td>{{ timesheet.hours_spent }}</td>
+                    <td>{{ timesheet.percent_completed }}%</td>
+                    <td>{{ timesheet.total_efforts }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9" class="no-timesheets">You haven't submitted any timesheets yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Roboto', sans-serif;
+        background-color: #f4f6f9;
+        color: #333;
+    }
+
     .timesheet-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 30px;
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 25px;
         background: #ffffff;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
     }
 
     .page-title {
-        font-size: 2.5rem;
-        color: #ff9a76;
+        font-size: 2.8rem;
+        color: #f5821f;
+        font-weight: bold;
         text-align: center;
         margin-bottom: 30px;
-        text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        margin-bottom: 20px;
     }
 
     .timesheet-table {
         width: 100%;
         border-collapse: collapse;
-        margin-bottom: 30px;
+        background-color: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     }
 
     .timesheet-table thead {
-        background-color: #ff9a76;
+        background-color: #f5821f;
         color: #fff;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+    .timesheet-table th, .timesheet-table td {
+        padding: 18px;
+        text-align: left;
+        font-size: 1rem;
     }
 
     .timesheet-table th {
-        padding: 12px 15px;
-        font-size: 1.2rem;
-        text-align: left;
+        background-color: #58585b;
+        color: #fff;
+        border-bottom: 3px solid #e2e8f0;
+    }
+
+    .timesheet-table tbody tr {
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .timesheet-table tbody tr:nth-child(even) {
+        background-color: #f9f9fb;
+    }
+
+    .timesheet-table tbody tr:hover {
+        background-color: #a6ce38;
+        transform: scale(1.01);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
     .timesheet-table td {
-        padding: 15px;
+        padding: 18px;
         border-bottom: 1px solid #ddd;
+        color: #333;
+    }
+
+    .no-timesheets {
+        text-align: center;
+        color: #58585b;
+        font-style: italic;
+        padding: 25px;
+        font-size: 1.2rem;
     }
 </style>
 {% endblock %}

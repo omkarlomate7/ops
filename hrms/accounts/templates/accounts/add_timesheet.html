@@ -12,58 +12,61 @@
     <form method="POST" id="timesheet-form">
         {% csrf_token %}
         <input type="hidden" name="row_count" id="row-count" value="1">
-        <table class="timesheet-table" id="timesheet-table">
-            <thead>
-                <tr>
-                    <th>Sr. No.</th>
-                    <th>Application Name</th>
-                    <th>Task Title</th>
-                    <th>Task Description</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Hours Spent</th>
-                    <th>% Completed</th>
-                    <th>Total Efforts</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="timesheet-body">
-                <tr>
-                    <td>1</td>
-                    <td><input type="text" name="application_name_1" class="input-field" required></td>
-                    <td><input type="text" name="task_title_1" class="input-field" required></td>
-                    <td><input type="text" name="task_description_1" class="input-field" required></td>
-                    <td><input type="date" name="start_date_1" class="input-field" required></td>
-                    <td><input type="date" name="end_date_1" class="input-field" required></td>
-                    <td><input type="number" name="hours_spent_1" step="0.1" class="input-field" required></td>
-                    <td><input type="number" name="percent_completed_1" class="input-field" required></td>
-                    <td><input type="number" name="total_efforts_1" step="0.1" class="input-field" required></td>
-                    <td><button type="button" class="remove-btn" disabled>-</button></td>
-                </tr>
-            </tbody>
-        </table>
-        <button type="button" id="add-row-btn" class="add-row-btn">+ Add Row</button>
-        <button type="submit" class="submit-btn">Submit Timesheet</button>
+        <div class="table-responsive">
+            <table class="timesheet-table" id="timesheet-table">
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Application Name</th>
+                        <th>Task Title</th>
+                        <th>Task Description</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Hours Spent</th>
+                        <th>% Completed</th>
+                        <th>Total Efforts</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="timesheet-body">
+                    <tr>
+                        <td>1</td>
+                        <td><input type="text" name="application_name_1" class="input-field" required></td>
+                        <td><input type="text" name="task_title_1" class="input-field" required></td>
+                        <td><input type="text" name="task_description_1" class="input-field" required></td>
+                        <td><input type="date" name="start_date_1" class="input-field" required></td>
+                        <td><input type="date" name="end_date_1" class="input-field" required></td>
+                        <td><input type="number" name="hours_spent_1" step="0.1" class="input-field" required></td>
+                        <td><input type="number" name="percent_completed_1" class="input-field" required></td>
+                        <td><input type="number" name="total_efforts_1" step="0.1" class="input-field" required></td>
+                        <td><button type="button" class="remove-btn" disabled>-</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="button-group">
+            <button type="button" id="add-row-btn" class="add-row-btn">+ Add Row</button>
+            <button type="submit" class="submit-btn">Submit Timesheet</button>
+        </div>
     </form>
 </div>
 
 <!-- Styling for the Timesheet Page -->
 <style>
-    /* General Styling */
     body, html {
         margin: 0;
         padding: 0;
-        font-family: 'RobotoGaramond', sans-serif;
-        background-color: #f5f7fa;
+        font-family: 'Poppins', sans-serif;
+        background-color: #f0f2f5;
         color: #333;
     }
 
     .timesheet-container {
-        max-width: 1200px;
-        margin: 0 auto;
+        max-width: 1000px;
+        margin: 40px auto;
         padding: 30px;
         background: #ffffff;
-        border-radius: 15px;
+        border-radius: 20px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
@@ -75,107 +78,129 @@
     }
 
     .page-title {
-        font-size: 2.8rem;
-        color: #000000;
-        text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        font-size: 2.2rem;
+        color: #2c3e50;
+        font-weight: bold;
+        letter-spacing: 1.2px;
     }
 
     .my-timesheets-btn {
-        background-color: #3b4a3a;
-        color: white;
+        background-color: #1abc9c;
+        color: #fff;
         padding: 10px 20px;
-        border-radius: 8px;
+        border-radius: 50px;
         text-decoration: none;
-        font-size: 1.1rem;
-        transition: background-color 0.3s ease;
+        font-size: 1rem;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .my-timesheets-btn:hover {
-        background-color: #3e8e41;
+        background-color: #16a085;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
     }
 
-    /* Table Styling */
+    .table-responsive {
+        overflow-x: auto;
+        margin-bottom: 25px;
+    }
+
     .timesheet-table {
         width: 100%;
         border-collapse: collapse;
-        margin-bottom: 30px;
-        background-color: #f8f9fa;
-        border-radius: 8px;
+        background-color: #ffffff;
+        border-radius: 10px;
         overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
 
     .timesheet-table thead {
-        background-color: #3b4a3a; /* Updated to black */
-        color: #fff;
-        font-weight: bold;
+        background-color: #333;
+        color: #ffffff;
+        text-transform: uppercase;
+        font-weight: 600;
+        font-size: 0.9rem;
     }
 
     .timesheet-table th, .timesheet-table td {
-        padding: 12px 15px;
-        font-size: 1.2rem;
+        padding: 14px;
         text-align: left;
+        font-size: 1rem;
     }
 
     .timesheet-table tbody tr:nth-child(even) {
-        background-color: #f2f2f2;
+        background-color: #f8f9fa;
+    }
+
+    .timesheet-table tbody tr:hover {
+        background-color: #f1f3f5;
+        cursor: pointer;
     }
 
     .input-field {
         width: 100%;
-        padding: 8px 10px;
+        padding: 10px;
         border: 1px solid #ccc;
-        border-radius: 4px;
+        border-radius: 8px;
         font-size: 1rem;
         transition: all 0.3s ease;
     }
 
     .input-field:focus {
-        border-color: #ff7849;
-        box-shadow: 0 0 8px rgba(255, 154, 118, 0.2);
+        border-color: #1abc9c;
+        box-shadow: 0 0 10px rgba(26, 188, 156, 0.2);
         outline: none;
     }
 
-    /* Add and Remove Buttons */
-    .add-row-btn, .remove-btn {
-        background-color: #3b4a3a; /* Updated to black */
-        color: white;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-size: 1.1rem;
-        cursor: pointer;
-        border: none;
-        transition: background-color 0.3s ease;
+    .button-group {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 20px;
     }
 
-    .add-row-btn:hover {
-        background-color: #333333;
+    .add-row-btn, .remove-btn {
+        background-color: #3498db;
+        color: #ffffff;
+        padding: 10px 25px;
+        border-radius: 50px;
+        font-size: 1rem;
+        cursor: pointer;
+        border: none;
+        transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .add-row-btn:hover, .remove-btn:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
 
     .remove-btn {
-        background-color: #ff4c4c;
+        background-color: #e74c3c;
     }
 
     .remove-btn:hover {
-        background-color: #e60000;
+        background-color: #c0392b;
     }
 
-    /* Submit Button */
     .submit-btn {
-        background-color: #3b4a3a;
-        color: white;
-        padding: 15px 30px;
+        background-color: #2ecc71;
+        color: #ffffff;
+        padding: 15px 35px;
         border: none;
-        border-radius: 8px;
-        font-size: 1.2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
         cursor: pointer;
-        margin: 0 auto;
-        display: block;
-        transition: background-color 0.3s ease;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     }
 
     .submit-btn:hover {
-        background-color: #ff5630;
-        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+        background-color: #27ae60;
+        box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
     }
 </style>
 

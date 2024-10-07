@@ -41,7 +41,7 @@
     }
 
     .sidebar a:hover {
-        background-color: #007bff;
+    background-color: #f5821f;
     }
 
     .main-content {
@@ -60,15 +60,15 @@
             --secondary-color: #f16522; /* Orange */
             --background-color: #f5f5f5; /* Light background */
             --light-green-color: #373e35; /* lite green */
-            --header-background: var(--primary-color);
-            --sidebar-background: var(--light-green-color);
+            --header-background: #f5821f;
+            --sidebar-background: #ffffff; /* Changed to White */
             --text-color-dark: #4d4d4f; /* Dark Gray for letters */
             --text-color-light: #b3b3b3; /* Light Gray for letters */
             --white-color: #fff;
             --font-family: 'Roboto', sans-serif;
             --transition-speed: 0.3s;
             --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --grey-green-background: #c6f5c4; 
+            --grey-green-background: #cccccc;
             
         }
 
@@ -142,7 +142,7 @@
         .sidebar .logo {
             font-size: 24px;
             font-weight: bold;
-            color: var(--white-color);
+            color: var(--text-color-dark);
             text-align: center;
             margin-bottom: 20px;
         }
@@ -150,7 +150,7 @@
         .sidebar a {
             padding: 15px 20px;
             font-size: 16px;
-            color: var(--white-color);
+            color: var(--text-color-dark);
             display: flex;
             align-items: center;
             text-decoration: none;
@@ -160,19 +160,19 @@
         .sidebar a i {
             margin-right: 10px;
             font-size: 18px;
-            color: var(--white-color);
+            color: var(--text-color-dark);
         }
 
         .sidebar a:hover {
-            background-color: var(--header-background);
+    background-color: #f5821f;
         }
         
 
         /* Content Styling */
         .content {
             margin-left: 250px;
-            margin-top: 70px;
-            padding: 20px;
+            margin-top: 10px;
+            padding: 0px;
             transition: margin-left var(--transition-speed) ease;
             color: var(--text-color-dark);
         }
@@ -328,7 +328,7 @@
 <!-- Sidebar CSS -->
 <style>
     .sidebar {
-        background-color: #2f3e46;
+        background-color: #ffffff; /* Changed to White */
         padding-top: 20px;
         min-width: 250px;
         position: fixed;
@@ -337,7 +337,7 @@
 
     .sidebar .logo {
         font-size: 24px;
-        color: #ffffff;
+        color: #4d4d4f;
         text-align: center;
         margin-bottom: 20px;
         font-weight: bold;
@@ -346,14 +346,14 @@
     .sidebar a {
         display: block;
         padding: 10px 20px;
-        color: #ffffff;
+        color: #4d4d4f;
         text-decoration: none;
         font-size: 16px;
     }
 
     .sidebar a:hover {
-        background-color: #3b4a3a;
-        color: #ffffff;
+        background-color: #f5821f;
+        color: #ffffff; 
     }
 
     .dropdown {
@@ -366,7 +366,7 @@
         cursor: pointer;
         padding: 10px 20px;
         width: 100%;
-        color: white;
+        color: #4d4d4f;
         text-align: left;
         background-color: transparent;
         border: none;
@@ -374,7 +374,7 @@
 
     .dropdown-content {
         display: none;
-        background-color: #2f3e46;
+        background-color: #ffffff;
         padding-left: 20px;
     }
 
@@ -384,14 +384,14 @@
 
     .dropdown-content a {
         padding: 10px 30px;
-        color: #ffffff;
+        color: #4d4d4f;
         display: block;
         text-decoration: none;
         font-size: 14px;
     }
 
     .dropdown-content a:hover {
-        background-color: #3b4a3a;
+    background-color: #f5821f;
     }
 
     .fas {
@@ -407,10 +407,10 @@
         {% endblock %}
     </div>
 
-    <!-- Footer Section -->
+    {% comment %} <!-- Footer Section -->
     <div class="footer" id="footer">
         <p>&copy; 2024 HRMS. All Rights Reserved.</p>
-    </div>
+    </div> {% endcomment %}
 
     <!-- JavaScript for Sidebar Toggle -->
     <script>
